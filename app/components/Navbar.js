@@ -64,18 +64,26 @@ class Navbar extends React.Component {
       });
     }
   }
+  //onClick={this.handleLogout.bind(this)}
 
   render() {
     let loginButton = this.props.loggedIn ?
     <li>
-      <a className='user-drop' role='button' tabindex="0" onClick={this.handleLogout.bind(this)}>
+      <a className='dropdown-toggle' role='button' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span>{this.props.profile.nickname}</span>
         <img className='img img-circle' src={this.props.profile.picture} />
+        <span className="glyphicon glyphicon-chevron-down"></span>
       </a>
+      <ul className="dropdown-menu">
+      <li><Link to='/MyBoutique'>My Boutique</Link></li>
+      <li role="separator" className="divider"></li>
+      <li><a role='button' onClick={this.handleLogout.bind(this)}>Logout</a></li>
+      </ul>
     </li> :
     <li><a role='button' onClick={this.handleLogin.bind(this)}>Login</a></li>;
     return (
       <nav className='navbar navbar-default navbar-static-top'>
+        <div className='container-fluid'>
         <div className='navbar-header'>
           <button type='button' className='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar'>
             <span className='sr-only'>Toggle navigation</span>
@@ -110,8 +118,11 @@ class Navbar extends React.Component {
           </form>
           <ul className='nav navbar-nav'>
             <li><Link to='/'>Home</Link></li>
+          </ul>
+          <ul className="nav navbar-nav navbar-right">
             {loginButton}
           </ul>
+        </div>
         </div>
       </nav>
     );

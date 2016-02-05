@@ -58,7 +58,9 @@ app.get('/api/clothes/count', function(req, res, next) {
 * GET /api/characters/search
 * Looks up a character by name. (case-insensitive)
 */
+app.use('/api/clothes/search', jwtCheck);
 app.get('/api/clothes/search', function(req, res, next) {
+  console.log(req.user);
   var clothingName = new RegExp(req.query.name, 'i');
 
   Clothes.findOne({ name: clothingName }, function(err, clothing) {
@@ -71,6 +73,13 @@ app.get('/api/clothes/search', function(req, res, next) {
     res.send(clothing);
   });
 });
+
+app.use('/api/myBoutique', jwtCheck);
+app.get('/api/myBoutique', function(req, res, next) {
+  //get the req.user.sub
+});
+
+
 
 app.use(function(req, res) {
   Router.match({ routes: routes, location: req.url }, function(err, redirectLocation, renderProps) {

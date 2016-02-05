@@ -34,7 +34,7 @@ class NavbarStore {
   }
 
   onGetClothesCountSuccess(data) {
-    this.totalCharacters = data.count;
+    this.totalClothes = data.count;
   }
 
   onGetClothesCountFail(jqXhr) {
