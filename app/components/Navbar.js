@@ -64,7 +64,6 @@ class Navbar extends React.Component {
       });
     }
   }
-  //onClick={this.handleLogout.bind(this)}
 
   render() {
     let loginButton = this.props.loggedIn ?
@@ -77,6 +76,7 @@ class Navbar extends React.Component {
       <ul className="dropdown-menu">
       <li><Link to='/MyBoutique'>My Boutique</Link></li>
       <li role="separator" className="divider"></li>
+      <li><Link to='/Account'>Account Management</Link></li>
       <li><a role='button' onClick={this.handleLogout.bind(this)}>Logout</a></li>
       </ul>
     </li> :

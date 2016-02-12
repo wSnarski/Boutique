@@ -19,6 +19,8 @@ http://alt.js.org/guide/wait-for/
 
 Single Page Authentication
 https://auth0.com/blog/2015/04/09/adding-authentication-to-your-react-flux-app/
+https://manage.auth0.com/#/connections/database/con_FMtolJpgoGQpHf8s/plug
+
 --Local Storage of Auth?
 https://www.npmjs.com/package/flummox-localstore
 
