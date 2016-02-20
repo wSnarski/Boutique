@@ -4,17 +4,17 @@ import NavbarActions from '../actions/NavbarActions';
 class NavbarStore {
   constructor() {
     this.bindActions(NavbarActions);
-    this.totalClothes = 0;
+    this.totalItems = 0;
     this.onlineUsers = 0;
     this.searchQuery = '';
     this.ajaxAnimationClass = '';
   }
 
-  onFindClothesSuccess(payload) {
-    payload.history.pushState(null, '/clothes/' + payload.clothesId);
+  onFindItemSuccess(payload) {
+    payload.history.pushState(null, '/items/' + payload.clothesId);
   }
 
-  onFindClothesFail(payload) {
+  onFindItemFail(payload) {
     payload.searchForm.classList.add('shake');
     setTimeout(() => {
       payload.searchForm.classList.remove('shake');
@@ -33,11 +33,11 @@ class NavbarStore {
     this.searchQuery = event.target.value;
   }
 
-  onGetClothesCountSuccess(data) {
-    this.totalClothes = data.count;
+  onGetItemCountSuccess(data) {
+    this.totalItems = data.count;
   }
 
-  onGetClothesCountFail(jqXhr) {
+  onGetItemCountFail(jqXhr) {
     toastr.error(jqXhr.responseJSON.message);
   }
 }

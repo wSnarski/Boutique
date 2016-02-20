@@ -7,34 +7,34 @@ class NavbarActions {
       'updateOnlineUsers',
       'updateAjaxAnimation',
       'updateSearchQuery',
-      'getClothesCountSuccess',
-      'getClothesCountFail',
-      'findClothesSuccess',
-      'findClothesFail'
+      'getItemCountSuccess',
+      'getItemCountFail',
+      'findItemSuccess',
+      'findItemFail'
     );
   }
 
-  findClothes(payload) {
+  findItem(payload) {
     $.ajax({
-      url: '/api/clothes/search',
+      url: '/api/items/search',
       data: { name: payload.searchQuery }
     })
     .done((data) => {
       assign(payload, data);
-      this.actions.findClothesSuccess(payload);
+      this.actions.findItemSuccess(payload);
     })
     .fail(() => {
-      this.actions.findClothesFail(payload);
+      this.actions.findItemFail(payload);
     });
   }
 
-  getClothesCount() {
-    $.ajax({ url: '/api/clothes/count' })
+  getItemCount() {
+    $.ajax({ url: '/api/items/count' })
     .done((data) => {
-      this.actions.getClothesCountSuccess(data)
+      this.actions.getItemCountSuccess(data)
     })
     .fail((jqXhr) => {
-      this.actions.getClothesCountFail(jqXhr)
+      this.actions.getItemCountFail(jqXhr)
     });
   }
 }

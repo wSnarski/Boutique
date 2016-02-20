@@ -8,7 +8,7 @@ export default (ComposedComponent) => {
     static onEnter(nextRoute, replace) {
       if (!LoginStore.getState().LoggedIn) {
         replace({
-          pathname: '/shame',
+          pathname: '/login',
           state: { nextPathname: nextRoute.location.pathname }
         });
       }
@@ -32,8 +32,8 @@ export default (ComposedComponent) => {
       this.setState(state, () => {
         if(!this.state.LoggedIn) {
           this.props.history.replace({
-            pathname: '/shame',
-            state: { nextPathname: 'shame' }
+            pathname: '/login',
+            state: { nextPathname: 'login' }
           });
         }
       });

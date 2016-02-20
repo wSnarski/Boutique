@@ -20,7 +20,7 @@ var Router = require('react-router');
 var routes = require('./app/routes');
 
 var mongoose = require('mongoose');
-var Clothes = require('./models/clothes');
+var Items = require('./models/items');
 
 mongoose.connect(config.database);
 mongoose.connection.on('error', function() {
@@ -44,32 +44,32 @@ app.use(express.static(path.join(__dirname, 'public')));
 //break these out to controllers
 
 /**
-* GET /api/characters/count
-* Returns the total number of characters.
+* GET /api/items/count
+* Returns the total number of items.
 */
-app.get('/api/clothes/count', function(req, res, next) {
-  Clothes.count({}, function(err, count) {
+app.get('/api/items/count', function(req, res, next) {
+  Items.count({}, function(err, count) {
     if (err) return next(err);
     res.send({ count: count });
   });
 });
 
 /**
-* GET /api/characters/search
-* Looks up a character by name. (case-insensitive)
+* GET /api/items/search
+* Looks up a item by name. (case-insensitive)
 */
-app.get('/api/clothes/search', function(req, res, next) {
+app.get('/api/items/search', function(req, res, next) {
   console.log(req.user);
-  var clothingName = new RegExp(req.query.name, 'i');
+  var itemName = new RegExp(req.query.name, 'i');
 
-  Clothes.findOne({ name: clothingName }, function(err, clothing) {
+  Items.findOne({ name: itemName }, function(err, item) {
     if (err) return next(err);
 
-    if (!clothing) {
-      return res.status(404).send({ message: 'Clothing not found.' });
+    if (!item) {
+      return res.status(404).send({ message: 'Item not found.' });
     }
 
-    res.send(clothing);
+    res.send(item);
   });
 });
 
