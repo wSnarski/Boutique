@@ -73,6 +73,20 @@ app.get('/api/items/search', function(req, res, next) {
   });
 });
 
+app.get('/api/items/:id', function(req, res, next) {
+  var id = req.params.id;
+
+  Items.findOne({ _id: id }, function(err, item) {
+    if (err) return next(err);
+
+    if (!item) {
+      return res.status(404).send({ message: 'Item not found.' });
+    }
+
+    res.send(item);
+  });
+});
+
 
 //or
 

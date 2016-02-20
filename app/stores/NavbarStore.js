@@ -11,7 +11,7 @@ class NavbarStore {
   }
 
   onFindItemSuccess(payload) {
-    payload.history.pushState(null, '/items/' + payload.clothesId);
+    payload.history.push('/items/' + payload._id);
   }
 
   onFindItemFail(payload) {
