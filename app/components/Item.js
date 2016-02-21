@@ -1,4 +1,5 @@
 import React from 'react';
+import ItemManager from './ItemManager'
 import ItemStore from '../stores/ItemStore';
 import ItemActions from '../actions/ItemActions';
 
@@ -36,6 +37,7 @@ class Item extends React.Component {
         <h3 className='text-center'>You are viewing an item</h3>
         <h4>{this.state.name}</h4>
         <h4>{this.state.type}</h4>
+        <ItemManager itemId={this.props.params.id}></ItemManager>
       </div>
     );
   }

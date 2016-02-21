@@ -5,15 +5,6 @@ import LoginStore from '../stores/LoginStore';
 export default (ComposedComponent) => {
   return class AuthenticatedComponent extends React.Component {
 
-    static onEnter(nextRoute, replace) {
-      if (!LoginStore.getState().LoggedIn) {
-        replace({
-          pathname: '/login',
-          state: { nextPathname: nextRoute.location.pathname }
-        });
-      }
-    }
-
     constructor(props) {
       super(props);
       this.state = LoginStore.getState();
@@ -29,23 +20,19 @@ export default (ComposedComponent) => {
     }
 
     onChange(state) {
-      this.setState(state, () => {
-        if(!this.state.LoggedIn) {
-          this.props.history.replace({
-            pathname: '/login',
-            state: { nextPathname: 'login' }
-          });
-        }
-      });
+      this.setState(state);
     }
 
     render() {
       return (
-        <ComposedComponent
-      {...this.props}
-      profile={this.state.user}
-      token={this.state.jwt}
-      userLoggedIn={this.state.LoggedIn} />
+        this.state.LoggedIn ?
+          <ComposedComponent
+            {...this.props}
+            profile={this.state.user}
+            token={this.state.jwt}
+            userLoggedIn={this.state.LoggedIn} />
+          :
+          <h4>Please log in to use this function</h4>
     );
   }
 }

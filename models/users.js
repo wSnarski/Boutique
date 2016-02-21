@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var usersSchema = new mongoose.Schema({
-  userId: { type: String, unique: true, index: true }
+  authId: String
 });
 
 module.exports = mongoose.model('Users', usersSchema);

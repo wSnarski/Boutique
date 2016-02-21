@@ -21,7 +21,8 @@ class Navbar extends React.Component {
       NavbarActions.updateOnlineUsers(data);
     });
 
-    $(document).ajaxStart(() => {
+    //TODO since we have multiple ajax calls going out this is not really working..
+    /*$(document).ajaxStart(() => {
       NavbarActions.updateAjaxAnimation('fadeIn');
     });
 
@@ -29,7 +30,7 @@ class Navbar extends React.Component {
       setTimeout(() => {
         NavbarActions.updateAjaxAnimation('fadeOut');
       }, 750);
-    });
+    });*/
   }
 
   componentWillUnmount() {

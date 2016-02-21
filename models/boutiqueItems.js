@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
 
-var boutiqueItemsSchema = new mongoose.Schema({
-  boutiqueItemId: { type: String, unique: true, index: true }
+var Schema = mongoose.Schema,
+ObjectId = Schema.ObjectId;
+
+var boutiqueItemsSchema = new Schema({
   boutiqueId: { type : ObjectId, ref: 'Boutiques' },
   itemId: { type: ObjectId, ref: 'Items'}
 });
 
-module.exports = mongoose.model('Boutiques', boutiquesSchema);
+module.exports = mongoose.model('BoutiqueItems', boutiqueItemsSchema);
