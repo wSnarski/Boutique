@@ -103,7 +103,8 @@ app.get('/api/Boutiques/My', function(req, res, next) {
 
 app.use('/api/Boutiques/My/items/:id', jwtCheck);
 app.get('/api/Boutiques/My/items/:id', function(req, res, next) {
-  //TODO no doubt that this can be done better with less db calls
+  //TODO no doubt that this can be done better with less db
+  var id = req.params.id;
   async.waterfall([
     function(callback) {
       Users.findOne({authId: req.user.sub}, function(err, user) {
@@ -122,19 +123,29 @@ app.get('/api/Boutiques/My/items/:id', function(req, res, next) {
     function(boutiques, callback) {
       BoutiqueItems.find({
         boutiqueId: { $in: _.pluck(boutiques, 'id') },
-        itemId: req.params.id
+        itemId: id
       }, function(err, boutiqueItems){
-
+        if (err) return next(err);
+        var bitems = _.map(boutiques, function(boutique){
+          return {
+            id: boutique.id,
+            name: boutique.name,
+            items: _.map(_.filter(boutiqueItems, function(item) {
+                            return item.boutiqueId.id === boutique._id.id
+                          }),
+                          function(filteredItem){
+                            return {
+                              id: filteredItem.id,
+                              boutiqueId: filteredItem.boutiqueId,
+                              itemId: filteredItem.itemId
+                            }
+                          })
+          }
+        });
+        res.send(bitems);
       });
     }
   ]);
-
-
-  if(!userBoutiques) {
-    res.send(boutiqueItems);
-  }
-
-  //get the items from the boutiques
 });
 
 app.use('/api/Boutiques/My/items', jwtCheck);
@@ -199,12 +210,45 @@ app.post('/api/Boutiques/My/items', function(req, res, next) {
   ]);
 });
 
+
 //since we can have multiple boutiques per user.
 app.use('/api/Boutiques/:boutiqueId/items', jwtCheck);
 app.post('/api/Boutiques/:boutiqueId/items', function(req, res, next) {
+  var id = req.params.id;
+  var boutiqueId = req.params.boutiqueId;
+  async.waterfall([
+    function(callback) {
+      Users.findOne({authId: req.user.sub}, function(err, user) {
+        if(err) return next(err);
+        //TODO create users in one place
+        if (!user) res.status(400).send({ message: 'No user found' });
+        callback(err, user);
+      });
+    },
+    function(user, callback) {
+      Boutiques.findOne(boutiqueId, function(err, boutique){
+        if (err) return next(err);
+        if(!boutique) {
+          res.status(400).send({ message: 'No boutique found '});
+        }
+        if(!_.contains(_.pluck(boutique.owners, 'id'), user._id.id)) {
+          res.status(400).send({ message: 'You are not the owner of this boutique'});
+        }
+        callback(err, boutique);
+      });
+    },
+    function(boutique, callback) {
+      var boutiqueItem = new BoutiqueItems({
+        boutiqueId: boutique.id,
+        itemId: req.body.itemId
+      });
+      boutiqueItem.save(function(err, boutiqueItem){
+        if (err) return next(err);
+        res.send({ message: 'Item added succesfully'});
+      });
+    }
+  ]);
 });
-
-
 
 app.use(function(req, res) {
   Router.match({ routes: routes, location: req.url }, function(err, redirectLocation, renderProps) {
