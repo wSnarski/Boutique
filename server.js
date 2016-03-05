@@ -78,6 +78,7 @@ app.get('/api/items/search', function(req, res, next) {
 app.get('/api/items/:id', function(req, res, next) {
   var id = req.params.id;
 
+  //TODO doesn't findOne(id, func..) work?
   Items.findOne({'_id':id }, function(err, item) {
     if (err) return next(err);
 
@@ -89,21 +90,33 @@ app.get('/api/items/:id', function(req, res, next) {
   });
 });
 
-//or
-
-// /api/Boutique/My
-
-// /apy/Boutique/132134
-
 
 app.use('/api/Boutiques/My', jwtCheck);
 app.get('/api/Boutiques/My', function(req, res, next) {
+  //TODO no doubt that this can be done better with less db calls
+  async.waterfall([
+    function(callback) {
+      Users.findOne({authId: req.user.sub}, function(err, user) {
+        if(err) return next(err);
+        if(!user) res.send([]);
+        callback(err, user);
+      })
+    },
+    function(user, callback) {
+      Boutiques.find({owners: user}, function(err, boutiques){
+        if (err) return next(err);
+        if(!boutiques) res.send([]);
+        else res.send(boutiques);
+      });
+    }
+
+  ]);
   //get the req.user.sub
 });
 
 app.use('/api/Boutiques/My/items/:id', jwtCheck);
 app.get('/api/Boutiques/My/items/:id', function(req, res, next) {
-  //TODO no doubt that this can be done better with less db
+  //TODO no doubt that this can be done better with less db calls
   var id = req.params.id;
   async.waterfall([
     function(callback) {
@@ -210,11 +223,33 @@ app.post('/api/Boutiques/My/items', function(req, res, next) {
   ]);
 });
 
+app.get('/api/Boutiques/:id', function(req, res, next) {
+  //TODO no doubt that this can be done better with less db calls
+  var boutiqueId = req.params.id;
+  async.waterfall([
+    function(callback) {
+      Boutiques.findOne(boutiqueId, function(err, boutique) {
+        if (err) return next(err);
+        if (!boutique) res.status(400).send({ message: 'No boutique found' });
+        callback(err, boutique);
+      });
+    },
+    function(boutique, callback) {
+      BoutiqueItems.find({boutiqueId: boutique.id}, function(err, items){
+        if (err) return next(err);
+        var fullBoutique = {
+          info: boutique,
+          items: items
+        };
+        res.send(fullBoutique);
+      });
+    }
+  ]);
+});
 
-//since we can have multiple boutiques per user.
 app.use('/api/Boutiques/:boutiqueId/items', jwtCheck);
 app.post('/api/Boutiques/:boutiqueId/items', function(req, res, next) {
-  var id = req.params.id;
+  var id = req.params.boutiqueId;
   var boutiqueId = req.params.boutiqueId;
   async.waterfall([
     function(callback) {
