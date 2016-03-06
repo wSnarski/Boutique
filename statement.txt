@@ -24,4 +24,6 @@ https://manage.auth0.com/#/connections/database/con_FMtolJpgoGQpHf8s/plug
 --Local Storage of Auth?
 https://www.npmjs.com/package/flummox-localstore
 
+REST concepts
+http://stackoverflow.com/questions/6324547/how-to-handle-many-to-many-relationships-in-a-restful-api
 

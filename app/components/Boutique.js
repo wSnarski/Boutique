@@ -6,6 +6,7 @@ class Boutique extends React.Component {
 
   constructor(props) {
     super(props);
+    //TODO maybe we have this take its items as props.....
     this.state = BoutiqueStore.getState();
     this.onChange = this.onChange.bind(this);
   }

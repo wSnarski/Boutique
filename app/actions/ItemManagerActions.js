@@ -13,7 +13,7 @@ class ItemManagerActions {
   }
 
   getItemCountForUser(itemId) {
-    $.ajax({ url: '/api/Boutiques/My/items/' + itemId})
+    $.ajax({ url: '/api/Users/Me/Boutiques/items/' + itemId})
     .done((data) => {
       this.actions.getItemCountForUserSuccess(data);
     })
@@ -25,7 +25,7 @@ class ItemManagerActions {
   addItemForUser(itemId) {
     $.ajax({
       type: 'POST',
-      url: '/api/Boutiques/My/items',
+      url: '/api/Users/Me/Boutiques/items',
       data: { itemId: itemId }
     })
     .done(() => {
