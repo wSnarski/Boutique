@@ -9,7 +9,7 @@ class BoutiqueManagerActions {
   }
 
   getMyBoutiques() {
-    $.ajax({ url: '/api/Boutiques/My' })
+    $.ajax({ url: '/api/Users/Me/Boutiques' })
     .done((data) => {
       this.actions.getMyBoutiquesSuccess(data);
     })
@@ -17,6 +17,8 @@ class BoutiqueManagerActions {
       this.actions.getMyBoutiquesFail(jqXhr);
     });
   }
+
+  //get boutiques for user..
 }
 
 export default alt.createActions(BoutiqueManagerActions);

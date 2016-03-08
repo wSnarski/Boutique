@@ -75,7 +75,7 @@ class Navbar extends React.Component {
         <span className="glyphicon glyphicon-chevron-down"></span>
       </a>
       <ul className="dropdown-menu">
-      <li><Link to='/BoutiqueManager'>My Boutique</Link></li>
+      <li><Link to='/myBoutiques'>My Boutiques</Link></li>
       <li role="separator" className="divider"></li>
       <li><Link to='/Account'>Account Management</Link></li>
       <li><a role='button' onClick={this.handleLogout.bind(this)}>Logout</a></li>

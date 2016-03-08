@@ -17,8 +17,12 @@ module.exports = function(app, Users, Boutiques, BoutiqueItems, jwtCheck) {
         Boutiques.find({owners: user}, function(err, boutiques){
           if (err) return next(err);
           if(!boutiques) res.send([]);
-          else res.send(boutiques);
+          callback(err, boutiques);
         });
+      },
+      function(boutiques, callback) {
+        //BoutiqueItems.find({ }, function(err, boutiqueItems))
+        res.send(boutiques);
       }
     ]);
       //get the req.user.sub

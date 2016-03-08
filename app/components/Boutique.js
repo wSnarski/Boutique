@@ -1,34 +1,18 @@
 import React from 'react';
-import BoutiqueStore from '../stores/BoutiqueStore';
-import BoutiqueActions from '../actions/BoutiqueActions';
+import BoutiqueManagerActions from '../actions/BoutiqueManagerActions';
 
 class Boutique extends React.Component {
 
   constructor(props) {
     super(props);
-    //TODO maybe we have this take its items as props.....
-    this.state = BoutiqueStore.getState();
-    this.onChange = this.onChange.bind(this);
-  }
-
-  componentDidMount() {
-    BoutiqueStore.listen(this.onChange);
-    BoutiqueActions.getBoutique(this.props.boutiqueId);
-  }
-
-  componentWillUnmount() {
-    BoutiqueStore.unlisten(this.onChange);
-  }
-
-  onChange(state) {
-    this.setState(state);
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className='container'>
         <h3 className='text-center'>
-          I am a boutique
+          Boutique: {this.props.name}
         </h3>
       </div>
     );
