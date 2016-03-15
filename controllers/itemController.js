@@ -31,7 +31,6 @@ module.exports = function(app, Items){
   app.get('/api/items/:id', function(req, res, next) {
     var id = req.params.id;
 
-    //TODO doesn't findOne(id, func..) work?
     Items.findOne({'_id':id }, function(err, item) {
       if (err) return next(err);
 

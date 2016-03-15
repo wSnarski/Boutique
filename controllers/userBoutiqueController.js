@@ -21,8 +21,27 @@ module.exports = function(app, Users, Boutiques, BoutiqueItems, jwtCheck) {
         });
       },
       function(boutiques, callback) {
-        //BoutiqueItems.find({ }, function(err, boutiqueItems))
-        res.send(boutiques);
+        var fullBoutiques = [];
+        async.each(boutiques, function(boutique, callback) {
+          BoutiqueItems.find({boutiqueId: boutique.id },
+            function(err, boutiqueItems){
+            fullBoutiques.push({
+              info: boutique,
+              items: boutiqueItems
+            });
+            callback();
+          });
+        }, function(err){
+          if(err) return next(err);
+          callback(err, fullBoutiques);
+        });
+      },
+      function(fullBoutiques, callback) {
+        console.log("uniqueItems");
+        console.log( _.uniq(_.map(fullBoutiques, function(b) {
+          return _.pluck(b, 'itemId');
+        })));
+        res.send(fullBoutiques);
       }
     ]);
       //get the req.user.sub
@@ -61,7 +80,7 @@ module.exports = function(app, Users, Boutiques, BoutiqueItems, jwtCheck) {
               id: boutique.id,
               name: boutique.name,
               items: _.map(_.filter(boutiqueItems, function(item) {
-                return item.boutiqueId.id === boutique._id.id
+                return item.boutiqueId.toString() === boutique.id.toString()
               }),
               function(filteredItem){
                 return {

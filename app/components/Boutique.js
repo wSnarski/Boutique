@@ -12,7 +12,7 @@ class Boutique extends React.Component {
     return (
       <div className='container'>
         <h3 className='text-center'>
-          Boutique: {this.props.name}
+          Boutique: {this.props.info.name}
         </h3>
       </div>
     );

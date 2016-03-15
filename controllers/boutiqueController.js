@@ -46,7 +46,7 @@ module.exports = function(app, Users, Boutiques, BoutiqueItems, jwtCheck) {
                 if(!boutique) {
                   res.status(400).send({ message: 'No boutique found '});
                 }
-                if(!_.contains(_.pluck(boutique.owners, 'id'), user._id.id)) {
+                if(!_.contains(_.pluck(boutique.owners, 'id'), user.id.toString())) {
                   res.status(400).send({ message: 'You are not the owner of this boutique'});
                 }
                 callback(err, boutique);
