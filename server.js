@@ -44,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //routes
 require('./controllers/itemController')(app, Items);
 require('./controllers/boutiqueController')(app, Users, Boutiques, BoutiqueItems, jwtCheck);
-require('./controllers/userBoutiqueController')(app, Users, Boutiques, BoutiqueItems, jwtCheck);
+require('./controllers/userBoutiqueController')(app, Users, Boutiques, BoutiqueItems, Items, jwtCheck);
 
 app.use(function(req, res) {
   Router.match({ routes: routes, location: req.url }, function(err, redirectLocation, renderProps) {

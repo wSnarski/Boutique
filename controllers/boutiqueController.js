@@ -2,7 +2,7 @@ var async = require('async');
 var _ = require('underscore');
 
 module.exports = function(app, Users, Boutiques, BoutiqueItems, jwtCheck) {
-
+      //NOTE: this endpoint is not currently being used.
       app.get('/api/Boutiques/:id', function(req, res, next) {
         //TODO no doubt that this can be done better with less db calls
         var boutiqueId = req.params.id;
