@@ -5,15 +5,13 @@ class ItemManagerActions {
     this.generateActions(
       'getItemCountForUserSuccess',
       'getItemCountForUserFail',
-      'addItemForUserSuccess',
-      'addItemForUserFail',
       'addItemForBoutiqueSuccess',
       'addItemForBoutiqueFail'
     );
   }
 
   getItemCountForUser(itemId) {
-    $.ajax({ url: '/api/Users/Me/Boutiques/items/' + itemId})
+    $.ajax({ url: '/api/Users/Me/Boutiques/boutiqueItems?itemId='+itemId})
     .done((data) => {
       this.actions.getItemCountForUserSuccess(data);
     })
@@ -22,30 +20,15 @@ class ItemManagerActions {
     })
   }
 
-  addItemForUser(itemId) {
-    $.ajax({
-      type: 'POST',
-      url: '/api/Users/Me/Boutiques/items',
-      data: { itemId: itemId }
-    })
-    .done(() => {
-      //TODO this should pass along the list of items so we can refresh the view
-      this.actions.addItemForUserSuccess();
-    })
-    .fail((jqXhr) => {
-      this.actions.addItemForUserFail(jqXhr);
-    });
-  }
-
   addItemForBoutique(boutiqueId, itemId) {
     $.ajax({
       type: 'POST',
-      url: '/api/Boutiques/'+boutiqueId+'/items',
-      data: { itemId: itemId }
+      url: '/api/Boutiques/'+boutiqueId+'/boutiqueItems',
+      data: { boutiqueId: boutiqueId, itemId: itemId }
     })
-    .done(() => {
+    .done((item) => {
       //TODO this should pass along the list of items so we can refresh the view
-      this.actions.addItemForBoutiqueSuccess();
+      this.actions.addItemForBoutiqueSuccess(item);
     })
     .fail((jqXhr) => {
       this.actions.addItemForBoutiqueFail(jqXhr);

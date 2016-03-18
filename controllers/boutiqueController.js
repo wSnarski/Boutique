@@ -22,14 +22,13 @@ module.exports = function(app, Users, Boutiques, BoutiqueItems, jwtCheck) {
                 items: items
               };
               res.send(fullBoutique);
-              //TODO we probably want more item info here
             });
           }
           ]);
         });
 
-        app.use('/api/Boutiques/:id/items', jwtCheck);
-        app.post('/api/Boutiques/:id/items', function(req, res, next) {
+        app.use('/api/Boutiques/:id/boutiqueItems', jwtCheck);
+        app.post('/api/Boutiques/:id/boutiqueItems', function(req, res, next) {
           var boutiqueId = req.params.id;
           async.waterfall([
             function(callback) {
@@ -46,21 +45,26 @@ module.exports = function(app, Users, Boutiques, BoutiqueItems, jwtCheck) {
                 if(!boutique) {
                   res.status(400).send({ message: 'No boutique found '});
                 }
-                if(!_.contains(_.pluck(boutique.owners, 'id'), user.id.toString())) {
+                if(!_.any(boutique.owners,
+                  function(owner) {
+                    return owner.toString() === user.id.toString()
+                  }))
+                {
                   res.status(400).send({ message: 'You are not the owner of this boutique'});
                 }
                 callback(err, boutique);
               });
             },
             function(boutique, callback) {
-              console.log(req);
               var boutiqueItem = new BoutiqueItems({
                 boutiqueId: boutique.id,
                 itemId: req.body.itemId
               });
               boutiqueItem.save(function(err, boutiqueItem){
                 if (err) return next(err);
-                res.send({ message: 'Item added succesfully'});
+                //Note: this resource does not exist yet
+                res.location('/api/boutiqueItems/' + boutiqueItem.id.toString());
+                res.send(201, boutiqueItem);
               });
             }
             ]);

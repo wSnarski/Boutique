@@ -4,30 +4,21 @@ import ItemManagerActions from '../actions/ItemManagerActions';
 class ItemManagerStore {
   constructor() {
     this.bindActions(ItemManagerActions);
-    this.closetItems = [];
+    this.boutiqueItems = [];
     //this.wishItems = []
   }
 
   onGetItemCountForUserSuccess(data) {
-    this.closetItems = data;
+    this.boutiqueItems = data;
   }
 
   onGetItemCountForUserFail(jqXhr) {
     toastr.error(jqXhr.responseJSON.message);
   }
 
-  onAddItemForUserSuccess(jqXhr) {
-    toastr.success(jqXHr.responseJSON.message);
-    ItemManagerActions.getItemCountForUser();
-  }
-
-  onAddItemForUserFail(jqXhr) {
-    toastr.error(jqXhr.responseJSON.message);
-  }
-
-  onAddItemForBoutiqueSuccess(jqXhr) {
-    toastr.success(jqXHr.responseJSON.message);
-    ItemManagerActions.getItemCountForUser();
+  onAddItemForBoutiqueSuccess(item) {
+    toastr.success('Item successfully added.');
+    ItemManagerActions.getItemCountForUser(item.itemId);
   }
 
   onAddItemForBoutiqueFail(jqXhr) {

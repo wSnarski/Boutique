@@ -1,5 +1,6 @@
 import React from 'react';
 import AuthenticatedComponent from './AuthenticatedComponent';
+import ItemManagerBoutique from './ItemManagerBoutique';
 import ItemManagerStore from '../stores/ItemManagerStore';
 import ItemManagerActions from '../actions/ItemManagerActions';
 
@@ -26,26 +27,15 @@ class ItemManager extends React.Component {
     this.setState(state);
   }
 
-  addItemToUser(e) {
-    ItemManagerActions.addItemForUser(this.props.itemId);
-  }
-
-  addItemToBoutique(boutiqueId, e) {
-    ItemManagerActions.addItemForBoutique(this.props.itemId, boutiqueId);
-  }
-
   render() {
     return (
       <div className='container'>
         <h3 className='text-center'>This is the item manager</h3>
-        {this.state.closetItems.map((closetItem, i) => {
-            return (
-              <div onClick={this.addItemToBoutique.bind(this, closetItem.id)} key={i}>
-                {closetItem.name} : {closetItem.items.length}
-              </div>
-            );
-        })}
-        <h4 className='text-center' onClick={this.addItemToUser.bind(this)}>Add Item to Boutique</h4>
+        {
+          this.state.boutiqueItems.map((boutiqueItem, i) => {
+            return <ItemManagerBoutique key={i} itemId = {this.props.itemId} {...boutiqueItem}/>;
+          })
+        }
       </div>
     );
   }
